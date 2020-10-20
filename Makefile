@@ -6,7 +6,7 @@
 #    By: lde-moul <lde-moul@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/09 18:36:11 by lde-moul          #+#    #+#              #
-#    Updated: 2020/10/12 16:50:58 by lde-moul         ###   ########.fr        #
+#    Updated: 2020/10/20 15:29:44 by lde-moul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC = Lexer.cpp\
 DEP = Lexer.hpp\
       LexerError.hpp\
       LexerToken.hpp\
+      LexerTokenType.hpp\
 
 OBJ := $(SRC:%.cpp=$(OBJDIR)/%.o)
 SRC := $(SRC:%=$(SRCDIR)/%)
