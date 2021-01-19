@@ -18,7 +18,7 @@ public:
 	LexerToken();
 	LexerToken(eLexerTokenType type, std::string const & str);
 	LexerToken(LexerToken const & src);
-	LexerToken & operator=(const LexerToken & rhs);
+	LexerToken & operator=(LexerToken const & rhs);
 	~LexerToken();
 };
 
