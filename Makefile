@@ -6,7 +6,7 @@
 #    By: lde-moul <lde-moul@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/09 18:36:11 by lde-moul          #+#    #+#              #
-#    Updated: 2020/10/20 15:29:44 by lde-moul         ###   ########.fr        #
+#    Updated: 2020/10/21 17:21:59 by lde-moul         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,36 @@ CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = src
 OBJDIR = obj
 
-SRC = Lexer.cpp\
+SRC = Instruction.cpp\
+      Int8.cpp\
+      Int16.cpp\
+      Int32.cpp\
+      Float.cpp\
+      Double.cpp\
+      Lexer.cpp\
       LexerError.cpp\
       LexerToken.cpp\
       Main.cpp\
+      OperandFactory.cpp\
+      Parser.cpp\
+      ParserError.cpp\
 
-DEP = Lexer.hpp\
+DEP = Instruction.hpp\
+      InstructionType.hpp\
+      Int8.hpp\
+      Int16.hpp\
+      Int32.hpp\
+      Float.hpp\
+      Double.hpp\
+      IOperand.hpp\
+      Lexer.hpp\
       LexerError.hpp\
       LexerToken.hpp\
       LexerTokenType.hpp\
+      OperandFactory.hpp\
+      OperandType.hpp\
+      Parser.hpp\
+      ParserError.hpp\
 
 OBJ := $(SRC:%.cpp=$(OBJDIR)/%.o)
 SRC := $(SRC:%=$(SRCDIR)/%)

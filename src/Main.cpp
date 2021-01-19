@@ -1,5 +1,7 @@
 #include "Lexer.hpp"
 #include "LexerError.hpp"
+#include "Parser.hpp"
+#include "ParserError.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -20,9 +22,18 @@ int main(int argc, char **argv)
 		std::vector<LexerToken> const & tokens = lexer.run();
 		(void)tokens;
 
+		Parser parser(tokens);
+		std::vector<Instruction> const & instructions = parser.run();
+
 		return 0;
 	}
 	catch (LexerError &e)
+	{
+		std::cerr << e.what();
+
+		return 1;
+	}
+	catch (ParserError &e)
 	{
 		std::cerr << e.what();
 
