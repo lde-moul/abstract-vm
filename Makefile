@@ -32,6 +32,8 @@ SRC = Instruction.cpp\
       OperandFactory.cpp\
       Parser.cpp\
       ParserError.cpp\
+      VirtualMachineError.cpp\
+      VirtualMachineStack.cpp\
 
 DEP = Instruction.hpp\
       InstructionType.hpp\
@@ -49,6 +51,8 @@ DEP = Instruction.hpp\
       OperandType.hpp\
       Parser.hpp\
       ParserError.hpp\
+      VirtualMachineError.hpp\
+      VirtualMachineStack.hpp\
 
 OBJ := $(SRC:%.cpp=$(OBJDIR)/%.o)
 SRC := $(SRC:%=$(SRCDIR)/%)
