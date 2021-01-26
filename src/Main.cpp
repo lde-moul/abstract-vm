@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 		(void)tokens;
 
 		Parser parser(tokens);
-		std::vector<Instruction> const & instructions = parser.run();
+		std::vector<Instruction const *> const & instructions = parser.run();
 
 		return 0;
 	}

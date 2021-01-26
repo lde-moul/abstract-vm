@@ -29,4 +29,8 @@ Instruction & Instruction::operator=(Instruction const & rhs)
 	return *this;
 }
 
-Instruction::~Instruction() {}
+Instruction::~Instruction()
+{
+	if (operand)
+		delete operand;
+}

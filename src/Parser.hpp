@@ -11,7 +11,7 @@
 class Parser
 {
 private:
-	std::vector<Instruction> instructions;
+	std::vector<Instruction const *> instructions;
 	std::vector<LexerToken> tokens;
 	std::vector<LexerToken>::const_iterator currentToken = tokens.cbegin();
 	OperandFactory factory;
@@ -23,7 +23,7 @@ private:
 	void parseOperandInstruction(eInstructionType instructionType);
 
 public:
-	std::vector<Instruction> const & run();
+	std::vector<Instruction const *> const & run();
 
 	Parser();
 	Parser(std::vector<LexerToken> tokens);
