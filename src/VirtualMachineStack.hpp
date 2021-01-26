@@ -13,6 +13,7 @@ private:
 public:
 	void push(IOperand const * operand);
 	IOperand const * pop();
+	IOperand const * peek() const;
 	void dump();
 
 	VirtualMachineStack();

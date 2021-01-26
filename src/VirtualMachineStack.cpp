@@ -10,11 +10,17 @@ void VirtualMachineStack::push(IOperand const * operand)
 
 IOperand const * VirtualMachineStack::pop()
 {
+	IOperand const * operand = peek();
+	operands.pop_back();
+	return operand;
+}
+
+IOperand const * VirtualMachineStack::peek() const
+{
 	if (operands.empty())
 		throw VirtualMachineError();
 
 	IOperand const * operand = operands.back();
-	operands.pop_back();
 	return operand;
 }
 
