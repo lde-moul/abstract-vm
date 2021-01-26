@@ -10,8 +10,14 @@ void VirtualMachine::run()
 		switch (instruction->getType())
 		{
 		case eInstructionType::push:
+		{
+			IOperand const * operand = instruction->getOperand();
+			IOperand const * newOperand = factory.createOperand(operand->getType(), operand->toString());
+			stack.push(newOperand);
 			break;
+		}
 		case eInstructionType::pop:
+			stack.pop();
 			break;
 		case eInstructionType::dump:
 		{
