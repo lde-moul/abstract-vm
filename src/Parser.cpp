@@ -71,10 +71,10 @@ void Parser::parseOperandInstruction(eInstructionType instructionType)
 	currentToken++;
 
 	IOperand const * operand = factory.createOperand(operandType, operandString);
-	instructions.emplace_back(Instruction(instructionType, operand));
+	instructions.emplace_back(new Instruction(instructionType, operand));
 }
 
-std::vector<Instruction> const & Parser::run()
+std::vector<Instruction const *> const & Parser::run()
 {
 	currentToken = tokens.cbegin();
 
@@ -87,7 +87,7 @@ std::vector<Instruction> const & Parser::run()
 		if (instructionType == eInstructionType::push || instructionType == eInstructionType::assert)
 			parseOperandInstruction(instructionType);
 		else
-			instructions.emplace_back(instructionType);
+			instructions.emplace_back(new Instruction(instructionType));
 	}
 
 	return instructions;
