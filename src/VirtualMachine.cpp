@@ -14,7 +14,10 @@ void VirtualMachine::run()
 		case eInstructionType::pop:
 			break;
 		case eInstructionType::dump:
+		{
+			stack.dump();
 			break;
+		}
 		case eInstructionType::assert:
 			break;
 		case eInstructionType::add:
