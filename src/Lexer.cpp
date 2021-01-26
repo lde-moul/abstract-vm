@@ -35,15 +35,15 @@ std::vector<LexerToken> const & Lexer::run()
 			lineNum++;
 		else if (tryEatNextToken("^(\\s+)", eLexerTokenType::none))
 			continue;
-		else if (tryEatNextToken("^(;.*?)\n?", eLexerTokenType::none))
+		else if (tryEatNextToken("^(;.*)", eLexerTokenType::none))
 			continue;
 		else if (tryEatNextToken("^(push|pop|dump|assert|add|sub|mul|div|mod|print|exit)[^\\w]", eLexerTokenType::instruction))
 			continue;
 		else if (tryEatNextToken("^(int8|int16|int32|float|double)[^\\w]", eLexerTokenType::operandType))
 			continue;
-		else if (tryEatNextToken("^(\\-?\\d+)[^\\w]", eLexerTokenType::integerNumber))
-			continue;
 		else if (tryEatNextToken("^(\\-?\\d+\\.\\d+)[^\\w]", eLexerTokenType::realNumber))
+			continue;
+		else if (tryEatNextToken("^(\\-?\\d+)[^\\w]", eLexerTokenType::integerNumber))
 			continue;
 		else if (tryEatNextToken("^(\\()", eLexerTokenType::openingBracket))
 			continue;
