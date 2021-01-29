@@ -3,7 +3,6 @@
 
 #include <regex>
 #include <string>
-#include <cstdint>
 
 bool Lexer::tryEatNextToken(std::string const & regexString, eLexerTokenType tokenType)
 {
@@ -13,7 +12,7 @@ bool Lexer::tryEatNextToken(std::string const & regexString, eLexerTokenType tok
 	if (std::regex_search(position, code.cend(), match, regex))
 	{
 		if (tokenType != eLexerTokenType::none)
-			tokens.emplace_back(LexerToken(tokenType, match[1].str()));
+			tokens.emplace_back(LexerToken(tokenType, match[1].str(), lineNum));
 		position = match[1].second;
  		return true;
 	}
@@ -25,8 +24,6 @@ bool Lexer::tryEatNextToken(std::string const & regexString, eLexerTokenType tok
 
 std::vector<LexerToken> const & Lexer::run()
 {
-	uint32_t lineNum = 1;
-
 	while (true)
 	{
 		if (position == code.cend())
@@ -58,7 +55,7 @@ std::vector<LexerToken> const & Lexer::run()
 
 Lexer::Lexer() : Lexer("") {}
 
-Lexer::Lexer(std::string code) : code(code), position(this->code.cbegin()) {}
+Lexer::Lexer(std::string code) : code(code), position(this->code.cbegin()), lineNum(1) {}
 
 Lexer::Lexer(Lexer const & src)
 {
@@ -70,6 +67,7 @@ Lexer & Lexer::operator=(Lexer const & rhs)
 	tokens = rhs.tokens;
 	code = rhs.code;
 	position = rhs.position;
+	lineNum = rhs.lineNum;
 
 	return *this;
 }
