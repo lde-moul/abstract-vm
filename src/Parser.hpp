@@ -14,6 +14,7 @@ private:
 	std::vector<Instruction const *> instructions;
 	std::vector<LexerToken> tokens;
 	std::vector<LexerToken>::const_iterator currentToken = tokens.cbegin();
+	uint32_t lineNum;
 	OperandFactory factory;
 
 	void assertTokenType(eLexerTokenType type) const;
