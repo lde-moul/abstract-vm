@@ -34,6 +34,10 @@ void VirtualMachine::run()
 			stack.dump();
 			break;
 		case eInstructionType::assert:
+			op1 = stack.peek();
+			op2 = instruction->getOperand();
+			if (op1->getType() != op2->getType() || op1->toString() != op2->toString())
+				throw VirtualMachineError();
 			break;
 		case eInstructionType::add:
 			popOperandPair(op1, op2);
