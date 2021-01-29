@@ -3,15 +3,18 @@
 
 void Parser::assertTokenType(eLexerTokenType type) const
 {
-	if (currentToken == tokens.cend() || currentToken->getType() != type)
-		throw ParserError(0);
+	if (currentToken == tokens.cend())
+		throw ParserError();
+	if (currentToken->getType() != type)
+		throw ParserError(currentToken->getLineNum());
 }
 
 void Parser::assertTokenType(eLexerTokenType type1, eLexerTokenType type2) const
 {
-	if (currentToken == tokens.cend()
-	|| (currentToken->getType() != type1 && currentToken->getType() != type2))
-		throw ParserError(0);
+	if (currentToken == tokens.cend())
+		throw ParserError();
+	if (currentToken->getType() != type1 && currentToken->getType() != type2)
+		throw ParserError(currentToken->getLineNum());
 }
 
 eInstructionType Parser::nameToInstructionType(std::string const & name) const

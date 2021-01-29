@@ -7,6 +7,7 @@
 class ParserError : public std::runtime_error
 {
 public:
+	ParserError();
 	ParserError(uint32_t lineNum);
 };
 
