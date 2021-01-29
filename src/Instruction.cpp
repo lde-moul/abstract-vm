@@ -10,11 +10,16 @@ IOperand const * Instruction::getOperand() const
 	return operand;
 }
 
-Instruction::Instruction() : Instruction(eInstructionType::push) {}
+uint32_t Instruction::getLineNum() const
+{
+	return lineNum;
+}
 
-Instruction::Instruction(eInstructionType type) : Instruction(type, nullptr) {}
+Instruction::Instruction() : Instruction(eInstructionType::push, 1) {}
 
-Instruction::Instruction(eInstructionType type, IOperand const * operand) : type(type), operand(operand) {}
+Instruction::Instruction(eInstructionType type, uint32_t lineNum) : Instruction(type, nullptr, lineNum) {}
+
+Instruction::Instruction(eInstructionType type, IOperand const * operand, uint32_t lineNum) : type(type), operand(operand), lineNum(lineNum) {}
 
 Instruction::Instruction(Instruction const & src)
 {
@@ -25,6 +30,7 @@ Instruction & Instruction::operator=(Instruction const & rhs)
 {
 	type = rhs.type;
 	operand = rhs.operand;
+	lineNum = rhs.lineNum;
 
 	return *this;
 }
