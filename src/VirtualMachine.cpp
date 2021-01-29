@@ -5,9 +5,16 @@
 #include <iostream>
 #include <string>
 
+void VirtualMachine::popOperandPair(IOperand const * & op1, IOperand const * & op2)
+{
+	op1 = stack.pop();
+	op2 = stack.pop();
+}
+
 void VirtualMachine::run()
 {
 	OperandFactory factory;
+	IOperand const * op1, * op2, * result;
 
 	for (Instruction const * instruction : instructions)
 	{
@@ -29,14 +36,29 @@ void VirtualMachine::run()
 		case eInstructionType::assert:
 			break;
 		case eInstructionType::add:
+			popOperandPair(op1, op2);
+			result = *op2 + *op1;
+			stack.push(result);
 			break;
 		case eInstructionType::sub:
+			popOperandPair(op1, op2);
+			result = *op2 - *op1;
+			stack.push(result);
 			break;
 		case eInstructionType::mul:
+			popOperandPair(op1, op2);
+			result = *op2 * *op1;
+			stack.push(result);
 			break;
 		case eInstructionType::div:
+			popOperandPair(op1, op2);
+			result = *op2 / *op1;
+			stack.push(result);
 			break;
 		case eInstructionType::mod:
+			popOperandPair(op1, op2);
+			result = *op2 % *op1;
+			stack.push(result);
 			break;
 		case eInstructionType::print:
 		{
