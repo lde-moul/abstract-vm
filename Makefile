@@ -32,6 +32,7 @@ SRC = Instruction.cpp\
       OperandFactory.cpp\
       Parser.cpp\
       ParserError.cpp\
+      VirtualMachine.cpp\
       VirtualMachineError.cpp\
       VirtualMachineStack.cpp\
 
@@ -51,6 +52,7 @@ DEP = Instruction.hpp\
       OperandType.hpp\
       Parser.hpp\
       ParserError.hpp\
+      VirtualMachine.hpp\
       VirtualMachineError.hpp\
       VirtualMachineStack.hpp\
 
