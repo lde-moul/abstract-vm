@@ -1,5 +1,9 @@
 #include "OperandFactory.hpp"
 #include "VirtualMachine.hpp"
+#include "VirtualMachineError.hpp"
+
+#include <iostream>
+#include <string>
 
 void VirtualMachine::run()
 {
@@ -37,7 +41,16 @@ void VirtualMachine::run()
 		case eInstructionType::mod:
 			break;
 		case eInstructionType::print:
+		{
+			IOperand const * operand = stack.peek();
+			if (operand->getType() != eOperandType::Int8)
+				throw VirtualMachineError();
+			signed char c = std::stoi(operand->toString());
+			if (c < 0)
+				throw VirtualMachineError();
+			std::cout << c << std::endl;
 			break;
+		}
 		case eInstructionType::exit:
 			break;
 		}
