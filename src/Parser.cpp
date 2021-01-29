@@ -104,7 +104,9 @@ Parser::Parser(Parser const & src)
 
 Parser & Parser::operator=(Parser const & rhs)
 {
+	instructions = rhs.instructions;
 	tokens = rhs.tokens;
+	currentToken = rhs.currentToken;
 
 	return *this;
 }
