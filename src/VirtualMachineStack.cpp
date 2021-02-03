@@ -26,8 +26,8 @@ IOperand const * VirtualMachineStack::peek() const
 
 void VirtualMachineStack::dump()
 {
-	for (IOperand const * operand : operands)
-		std::cout << operand->toString() << std::endl;
+	for (auto iter = operands.rbegin(); iter != operands.rend(); iter++)
+		std::cout << (*iter)->toString() << std::endl;
 }
 
 VirtualMachineStack::VirtualMachineStack() {}
