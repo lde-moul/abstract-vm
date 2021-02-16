@@ -30,6 +30,7 @@ SRC = Instruction.cpp\
       LexerToken.cpp\
       Main.cpp\
       OperandFactory.cpp\
+      OperationError.cpp\
       Parser.cpp\
       ParserError.cpp\
       VirtualMachine.cpp\
@@ -50,6 +51,7 @@ DEP = Instruction.hpp\
       LexerTokenType.hpp\
       OperandFactory.hpp\
       OperandType.hpp\
+      OperationError.hpp\
       Parser.hpp\
       ParserError.hpp\
       VirtualMachine.hpp\

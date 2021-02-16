@@ -1,5 +1,8 @@
 #include "Double.hpp"
 #include "OperandFactory.hpp"
+#include "OperationError.hpp"
+
+#include <cmath>
 
 int Double::getPrecision() const
 {
@@ -13,77 +16,74 @@ eOperandType Double::getType() const
 
 IOperand const * Double::operator+(IOperand const & rhs) const
 {
-	if (getPrecision() >= rhs.getPrecision())
-	{
-		OperandFactory factory;
-		auto otherValue = std::stod(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
-	}
-	else
-	{
-		return rhs + *this;
-	}
+	OperandFactory factory;
+	double a = value;
+	double b = std::stod(rhs.toString());
+	double result = a + b;
+
+	if (!std::isfinite(result))
+		throw OperationOverflowError();
+
+	auto resultString = std::to_string(result);
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Double::operator-(IOperand const & rhs) const
 {
-	if (getPrecision() >= rhs.getPrecision())
-	{
-		OperandFactory factory;
-		auto otherValue = std::stod(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
-	}
-	else
-	{
-		return rhs + *this;
-	}
+	OperandFactory factory;
+	double a = value;
+	double b = std::stod(rhs.toString());
+	double result = a - b;
+
+	if (!std::isfinite(result))
+		throw OperationOverflowError();
+
+	auto resultString = std::to_string(result);
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Double::operator*(IOperand const & rhs) const
 {
-	if (getPrecision() >= rhs.getPrecision())
-	{
-		OperandFactory factory;
-		auto otherValue = std::stod(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
-	}
-	else
-	{
-		return rhs + *this;
-	}
+	OperandFactory factory;
+	double a = value;
+	double b = std::stod(rhs.toString());
+	double result = a * b;
+
+	if (!std::isfinite(result))
+		throw OperationOverflowError();
+
+	auto resultString = std::to_string(result);
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Double::operator/(IOperand const & rhs) const
 {
-	if (getPrecision() >= rhs.getPrecision())
-	{
-		OperandFactory factory;
-		auto otherValue = std::stod(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
-	}
-	else
-	{
-		return rhs + *this;
-	}
+	OperandFactory factory;
+	double a = value;
+	double b = std::stod(rhs.toString());
+	double result = a / b;
+
+	if (!std::isfinite(result))
+		throw OperationOverflowError();
+
+	auto resultString = std::to_string(result);
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Double::operator%(IOperand const & rhs) const
 {
-	if (getPrecision() >= rhs.getPrecision())
-	{
-		OperandFactory factory;
-		auto otherValue = std::stod(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
-	}
-	else
-	{
-		return rhs + *this;
-	}
+	OperandFactory factory;
+	double a = value;
+	double b = std::stod(rhs.toString());
+	double result = std::fmod(a, b);
+
+	if (!std::isfinite(result))
+		throw OperationOverflowError();
+
+	auto resultString = std::to_string(result);
+	return factory.createOperand(getType(), resultString);
 }
 
 std::string const & Double::toString() const

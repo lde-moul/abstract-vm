@@ -1,5 +1,8 @@
 #include "Float.hpp"
 #include "OperandFactory.hpp"
+#include "OperationError.hpp"
+
+#include <cmath>
 
 int Float::getPrecision() const
 {
@@ -16,8 +19,14 @@ IOperand const * Float::operator+(IOperand const & rhs) const
 	if (getPrecision() >= rhs.getPrecision())
 	{
 		OperandFactory factory;
-		auto otherValue = std::stof(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a + b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		auto resultString = std::to_string(result);
 		return factory.createOperand(getType(), resultString);
 	}
 	else
@@ -28,17 +37,33 @@ IOperand const * Float::operator+(IOperand const & rhs) const
 
 IOperand const * Float::operator-(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = std::stof(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a - b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Double)
 	{
-		return rhs + *this;
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = a - b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Float::operator*(IOperand const & rhs) const
@@ -46,44 +71,82 @@ IOperand const * Float::operator*(IOperand const & rhs) const
 	if (getPrecision() >= rhs.getPrecision())
 	{
 		OperandFactory factory;
-		auto otherValue = std::stof(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a * b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		auto resultString = std::to_string(result);
 		return factory.createOperand(getType(), resultString);
 	}
 	else
 	{
-		return rhs + *this;
+		return rhs * *this;
 	}
 }
 
 IOperand const * Float::operator/(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = std::stof(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a / b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Double)
 	{
-		return rhs + *this;
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = a / b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Float::operator%(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = std::stof(rhs.toString());
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = std::fmod(a, b);
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Double)
 	{
-		return rhs + *this;
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = std::fmod(a, b);
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
 	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 std::string const & Float::toString() const
