@@ -1,5 +1,8 @@
 #include "Int8.hpp"
 #include "OperandFactory.hpp"
+#include "OperationError.hpp"
+
+#include <cmath>
 
 int Int8::getPrecision() const
 {
@@ -16,8 +19,15 @@ IOperand const * Int8::operator+(IOperand const & rhs) const
 	if (getPrecision() >= rhs.getPrecision())
 	{
 		OperandFactory factory;
-		auto otherValue = static_cast<int8_t>(std::stoi(rhs.toString()));
-		auto resultString = std::to_string(value + otherValue);
+		int8_t a = value;
+		int8_t b = std::stoi(rhs.toString());
+
+		if (a >= 0 && b >= 0 && a > INT8_MAX - b)
+			throw OperationOverflowError();
+		else if (a < 0 && b < 0 && a < INT8_MIN - b)
+			throw OperationOverflowError();
+
+		auto resultString = std::to_string(a + b);
 		return factory.createOperand(getType(), resultString);
 	}
 	else
@@ -28,17 +38,69 @@ IOperand const * Int8::operator+(IOperand const & rhs) const
 
 IOperand const * Int8::operator-(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = static_cast<int8_t>(std::stoi(rhs.toString()));
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		int8_t a = value;
+		int8_t b = std::stoi(rhs.toString());
+
+		if (a >= 0 && b < 0 && a > INT8_MAX + b)
+			throw OperationOverflowError();
+		else if (a < 0 && b >= 0 && a < INT8_MIN + b)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a - b);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Int16)
 	{
-		return rhs + *this;
+		int16_t a = value;
+		int16_t b = std::stoi(rhs.toString());
+
+		if (a >= 0 && b < 0 && a > INT16_MAX + b)
+			throw OperationOverflowError();
+		else if (a < 0 && b >= 0 && a < INT16_MIN + b)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a - b);
 	}
+	else if (rhs.getType() == eOperandType::Int32)
+	{
+		int32_t a = value;
+		int32_t b = std::stoi(rhs.toString());
+
+		if (a >= 0 && b < 0 && a > INT32_MAX + b)
+			throw OperationOverflowError();
+		else if (a < 0 && b >= 0 && a < INT32_MIN + b)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a - b);
+	}
+	else if (rhs.getType() == eOperandType::Float)
+	{
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a - b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+	else if (rhs.getType() == eOperandType::Double)
+	{
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = a - b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Int8::operator*(IOperand const & rhs) const
@@ -46,44 +108,155 @@ IOperand const * Int8::operator*(IOperand const & rhs) const
 	if (getPrecision() >= rhs.getPrecision())
 	{
 		OperandFactory factory;
-		auto otherValue = static_cast<int8_t>(std::stoi(rhs.toString()));
-		auto resultString = std::to_string(value + otherValue);
+		int8_t a = value;
+		int8_t b = std::stoi(rhs.toString());
+
+		if ((a > 0) == (b > 0))
+		{
+			if ((a > 0 && a > INT8_MAX / b) || (a < 0 && a < INT8_MAX / b))
+				throw OperationOverflowError();
+		}
+		else
+		{
+			if ((a < 0 && a < INT8_MIN / b) || (a > 0 && a > INT8_MIN / b))
+				throw OperationOverflowError();
+		}
+
+		auto resultString = std::to_string(a * b);
 		return factory.createOperand(getType(), resultString);
 	}
 	else
 	{
-		return rhs + *this;
+		return rhs * *this;
 	}
 }
 
 IOperand const * Int8::operator/(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = static_cast<int8_t>(std::stoi(rhs.toString()));
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		int8_t a = value;
+		int8_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+		else if (a == INT8_MIN && b == -1)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a / b);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Int16)
 	{
-		return rhs + *this;
+		int16_t a = value;
+		int16_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+		else if (a == INT16_MIN && b == -1)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a / b);
 	}
+	else if (rhs.getType() == eOperandType::Int32)
+	{
+		int32_t a = value;
+		int32_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+		else if (a == INT32_MIN && b == -1)
+			throw OperationOverflowError();
+
+		resultString = std::to_string(a / b);
+	}
+	else if (rhs.getType() == eOperandType::Float)
+	{
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = a / b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+	else if (rhs.getType() == eOperandType::Double)
+	{
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = a / b;
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 IOperand const * Int8::operator%(IOperand const & rhs) const
 {
+	OperandFactory factory;
+	std::string resultString;
+
 	if (getPrecision() >= rhs.getPrecision())
 	{
-		OperandFactory factory;
-		auto otherValue = static_cast<int8_t>(std::stoi(rhs.toString()));
-		auto resultString = std::to_string(value + otherValue);
-		return factory.createOperand(getType(), resultString);
+		int8_t a = value;
+		int8_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+
+		resultString = std::to_string(a % b);
 	}
-	else
+	else if (rhs.getType() == eOperandType::Int16)
 	{
-		return rhs + *this;
+		int16_t a = value;
+		int16_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+
+		resultString = std::to_string(a % b);
 	}
+	else if (rhs.getType() == eOperandType::Int32)
+	{
+		int32_t a = value;
+		int32_t b = std::stoi(rhs.toString());
+
+		if (b == 0)
+			throw ZeroDivisionError();
+
+		resultString = std::to_string(a % b);
+	}
+	else if (rhs.getType() == eOperandType::Float)
+	{
+		float a = value;
+		float b = std::stof(rhs.toString());
+		float result = std::fmod(a, b);
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+	else if (rhs.getType() == eOperandType::Double)
+	{
+		double a = value;
+		double b = std::stod(rhs.toString());
+		double result = std::fmod(a, b);
+
+		if (!std::isfinite(result))
+			throw OperationOverflowError();
+
+		resultString = std::to_string(result);
+	}
+
+	return factory.createOperand(getType(), resultString);
 }
 
 std::string const & Int8::toString() const
