@@ -22,7 +22,6 @@ int main(int argc, char **argv)
 	{
 		Lexer lexer(code);
 		std::vector<LexerToken> const & tokens = lexer.run();
-		(void)tokens;
 
 		Parser parser(tokens);
 		std::vector<Instruction const *> const & instructions = parser.run();
