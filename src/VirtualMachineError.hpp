@@ -17,6 +17,12 @@ public:
 	VirtualMachineOperationOverflowError();
 };
 
+class VirtualMachineOperationUnderflowError : public VirtualMachineError
+{
+public:
+	VirtualMachineOperationUnderflowError();
+};
+
 class VirtualMachineZeroDivisionError : public VirtualMachineError
 {
 public:
