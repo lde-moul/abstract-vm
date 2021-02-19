@@ -18,7 +18,7 @@ IOperand const * VirtualMachineStack::pop()
 IOperand const * VirtualMachineStack::peek() const
 {
 	if (operands.empty())
-		throw VirtualMachineError();
+		throw VirtualMachineEmptyStackError();
 
 	IOperand const * operand = operands.back();
 	return operand;

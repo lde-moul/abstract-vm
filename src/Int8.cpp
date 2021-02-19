@@ -1,6 +1,6 @@
 #include "Int8.hpp"
 #include "OperandFactory.hpp"
-#include "OperationError.hpp"
+#include "OperandError.hpp"
 
 #include <cmath>
 

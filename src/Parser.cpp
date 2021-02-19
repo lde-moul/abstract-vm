@@ -1,3 +1,4 @@
+#include "OperandError.hpp"
 #include "Parser.hpp"
 #include "ParserError.hpp"
 
@@ -67,14 +68,21 @@ void Parser::parseOperandInstruction(eInstructionType instructionType)
 	currentToken++;
 
 	assertTokenType(eLexerTokenType::integerNumber, eLexerTokenType::realNumber);
-	std::string const & operandString = currentToken->getString();
+	auto valueToken = currentToken;
 	currentToken++;
 
 	assertTokenType(eLexerTokenType::closingBracket);
 	currentToken++;
 
-	IOperand const * operand = factory.createOperand(operandType, operandString);
-	instructions.emplace_back(new Instruction(instructionType, operand, lineNum));
+	try
+	{
+		IOperand const * operand = factory.createOperand(operandType, valueToken->getString());
+		instructions.emplace_back(new Instruction(instructionType, operand, lineNum));
+	}
+	catch (OperandRangeError & e)
+	{
+		throw ParserError(valueToken->getLineNum());
+	}
 }
 
 std::vector<Instruction const *> const & Parser::run()
