@@ -1,8 +1,10 @@
 #include "VirtualMachineError.hpp"
 
-VirtualMachineError::VirtualMachineError() : std::runtime_error("execution error") {}
+VirtualMachineError::VirtualMachineError() : VirtualMachineError("execution error") {}
 
-VirtualMachineError::VirtualMachineError(std::string message, uint32_t lineNum) : std::runtime_error(message + " at line " + std::to_string(lineNum)) {}
+VirtualMachineError::VirtualMachineError(std::string message) : std::runtime_error(message) {}
+
+VirtualMachineError::VirtualMachineError(std::string message, uint32_t lineNum) : VirtualMachineError(message + " at line " + std::to_string(lineNum)) {}
 
 VirtualMachineOperationOverflowError::VirtualMachineOperationOverflowError(uint32_t lineNum) : VirtualMachineError("operation overflow", lineNum) {}
 
@@ -19,3 +21,5 @@ VirtualMachineAssertionError::VirtualMachineAssertionError(uint32_t lineNum) : V
 VirtualMachineTypeError::VirtualMachineTypeError(uint32_t lineNum) : VirtualMachineError("invalid type", lineNum) {}
 
 VirtualMachineRangeError::VirtualMachineRangeError(uint32_t lineNum) : VirtualMachineError("value out of range", lineNum) {}
+
+VirtualMachineNoExitError::VirtualMachineNoExitError() : VirtualMachineError("reached end of program") {}
