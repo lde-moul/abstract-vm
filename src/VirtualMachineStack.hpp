@@ -3,6 +3,7 @@
 
 #include "IOperand.hpp"
 
+#include <cstddef>
 #include <vector>
 
 class VirtualMachineStack
@@ -11,6 +12,7 @@ private:
 	std::vector<IOperand const *> operands;
 
 public:
+	std::size_t getSize() const;
 	void push(IOperand const * operand);
 	IOperand const * pop();
 	IOperand const * peek() const;

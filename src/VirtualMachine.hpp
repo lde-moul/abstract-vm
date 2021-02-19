@@ -12,7 +12,7 @@ private:
 	std::vector<Instruction const *> instructions;
 	VirtualMachineStack stack;
 
-	void popOperandPair(IOperand const * & op1, IOperand const * & op2);
+	void popOperandPair(IOperand const * & op1, IOperand const * & op2, Instruction const * instruction);
 
 public:
 	void run();
