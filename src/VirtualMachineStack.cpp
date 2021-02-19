@@ -3,6 +3,11 @@
 
 #include <iostream>
 
+std::size_t VirtualMachineStack::getSize() const
+{
+	return operands.size();
+}
+
 void VirtualMachineStack::push(IOperand const * operand)
 {
 	operands.push_back(operand);
@@ -17,9 +22,6 @@ IOperand const * VirtualMachineStack::pop()
 
 IOperand const * VirtualMachineStack::peek() const
 {
-	if (operands.empty())
-		throw VirtualMachineEmptyStackError();
-
 	IOperand const * operand = operands.back();
 	return operand;
 }

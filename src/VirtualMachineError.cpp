@@ -1,19 +1,21 @@
 #include "VirtualMachineError.hpp"
 
-VirtualMachineError::VirtualMachineError() : VirtualMachineError("execution error") {}
+VirtualMachineError::VirtualMachineError() : std::runtime_error("execution error") {}
 
-VirtualMachineError::VirtualMachineError(std::string message) : std::runtime_error(message) {}
+VirtualMachineError::VirtualMachineError(std::string message, uint32_t lineNum) : std::runtime_error(message + " at line " + std::to_string(lineNum)) {}
 
-VirtualMachineOperationOverflowError::VirtualMachineOperationOverflowError() : VirtualMachineError("operation overflow") {}
+VirtualMachineOperationOverflowError::VirtualMachineOperationOverflowError(uint32_t lineNum) : VirtualMachineError("operation overflow", lineNum) {}
 
-VirtualMachineOperationUnderflowError::VirtualMachineOperationUnderflowError() : VirtualMachineError("operation underflow") {}
+VirtualMachineOperationUnderflowError::VirtualMachineOperationUnderflowError(uint32_t lineNum) : VirtualMachineError("operation underflow", lineNum) {}
 
-VirtualMachineZeroDivisionError::VirtualMachineZeroDivisionError() : VirtualMachineError("division by zero") {}
+VirtualMachineZeroDivisionError::VirtualMachineZeroDivisionError(uint32_t lineNum) : VirtualMachineError("division by zero", lineNum) {}
 
-VirtualMachineEmptyStackError::VirtualMachineEmptyStackError() : VirtualMachineError("empty stack") {}
+VirtualMachineEmptyStackError::VirtualMachineEmptyStackError(uint32_t lineNum) : VirtualMachineError("empty stack", lineNum) {}
 
-VirtualMachineAssertionError::VirtualMachineAssertionError() : VirtualMachineError("assertion failure") {}
+VirtualMachineNotEnoughOperandsError::VirtualMachineNotEnoughOperandsError(uint32_t lineNum) : VirtualMachineError("not enough operands", lineNum) {}
 
-VirtualMachineTypeError::VirtualMachineTypeError() : VirtualMachineError("invalid type") {}
+VirtualMachineAssertionError::VirtualMachineAssertionError(uint32_t lineNum) : VirtualMachineError("assertion failure", lineNum) {}
 
-VirtualMachineRangeError::VirtualMachineRangeError() : VirtualMachineError("value out of range") {}
+VirtualMachineTypeError::VirtualMachineTypeError(uint32_t lineNum) : VirtualMachineError("invalid type", lineNum) {}
+
+VirtualMachineRangeError::VirtualMachineRangeError(uint32_t lineNum) : VirtualMachineError("value out of range", lineNum) {}

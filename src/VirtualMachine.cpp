@@ -6,8 +6,11 @@
 #include <iostream>
 #include <string>
 
-void VirtualMachine::popOperandPair(IOperand const * & op1, IOperand const * & op2)
+void VirtualMachine::popOperandPair(IOperand const * & op1, IOperand const * & op2, Instruction const * instruction)
 {
+	if (stack.getSize() < 2)
+		throw VirtualMachineNotEnoughOperandsError(instruction->getLineNum());
+
 	op1 = stack.pop();
 	op2 = stack.pop();
 }
@@ -17,9 +20,9 @@ void VirtualMachine::run()
 	OperandFactory factory;
 	IOperand const * op1, * op2, * result;
 
-	try
+	for (Instruction const * instruction : instructions)
 	{
-		for (Instruction const * instruction : instructions)
+		try
 		{
 			switch (instruction->getType())
 			{
@@ -31,6 +34,9 @@ void VirtualMachine::run()
 				break;
 			}
 			case eInstructionType::pop:
+				if (stack.getSize() < 1)
+					throw VirtualMachineEmptyStackError(instruction->getLineNum());
+
 				stack.pop();
 				break;
 			case eInstructionType::dump:
@@ -40,30 +46,30 @@ void VirtualMachine::run()
 				op1 = stack.peek();
 				op2 = instruction->getOperand();
 				if (op1->getType() != op2->getType() || op1->toString() != op2->toString())
-					throw VirtualMachineAssertionError();
+					throw VirtualMachineAssertionError(instruction->getLineNum());
 				break;
 			case eInstructionType::add:
-				popOperandPair(op1, op2);
+				popOperandPair(op1, op2, instruction);
 				result = *op2 + *op1;
 				stack.push(result);
 				break;
 			case eInstructionType::sub:
-				popOperandPair(op1, op2);
+				popOperandPair(op1, op2, instruction);
 				result = *op2 - *op1;
 				stack.push(result);
 				break;
 			case eInstructionType::mul:
-				popOperandPair(op1, op2);
+				popOperandPair(op1, op2, instruction);
 				result = *op2 * *op1;
 				stack.push(result);
 				break;
 			case eInstructionType::div:
-				popOperandPair(op1, op2);
+				popOperandPair(op1, op2, instruction);
 				result = *op2 / *op1;
 				stack.push(result);
 				break;
 			case eInstructionType::mod:
-				popOperandPair(op1, op2);
+				popOperandPair(op1, op2, instruction);
 				result = *op2 % *op1;
 				stack.push(result);
 				break;
@@ -71,10 +77,10 @@ void VirtualMachine::run()
 			{
 				IOperand const * operand = stack.peek();
 				if (operand->getType() != eOperandType::Int8)
-					throw VirtualMachineTypeError();
+					throw VirtualMachineTypeError(instruction->getLineNum());
 				signed char c = std::stoi(operand->toString());
 				if (c < 0)
-					throw VirtualMachineRangeError();
+					throw VirtualMachineRangeError(instruction->getLineNum());
 				std::cout << c << std::endl;
 				break;
 			}
@@ -82,18 +88,18 @@ void VirtualMachine::run()
 				break;
 			}
 		}
-	}
-	catch (OperationOverflowError & e)
-	{
-		throw VirtualMachineOperationOverflowError();
-	}
-	catch (OperationUnderflowError & e)
-	{
-		throw VirtualMachineOperationUnderflowError();
-	}
-	catch (ZeroDivisionError & e)
-	{
-		throw VirtualMachineZeroDivisionError();
+		catch (OperationOverflowError & e)
+		{
+			throw VirtualMachineOperationOverflowError(instruction->getLineNum());
+		}
+		catch (OperationUnderflowError & e)
+		{
+			throw VirtualMachineOperationUnderflowError(instruction->getLineNum());
+		}
+		catch (ZeroDivisionError & e)
+		{
+			throw VirtualMachineZeroDivisionError(instruction->getLineNum());
+		}
 	}
 }
 
