@@ -68,7 +68,7 @@ IOperand const * OperandFactory::createInt32(std::string const & value) const
 
 IOperand const * OperandFactory::createFloat(std::string const & value) const
 {
-	int n;
+	float n;
 
 	try
 	{
@@ -84,7 +84,7 @@ IOperand const * OperandFactory::createFloat(std::string const & value) const
 
 IOperand const * OperandFactory::createDouble(std::string const & value) const
 {
-	int n;
+	double n;
 
 	try
 	{
