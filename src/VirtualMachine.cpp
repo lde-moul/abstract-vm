@@ -85,6 +85,7 @@ void VirtualMachine::run()
 				break;
 			}
 			case eInstructionType::exit:
+				return;
 				break;
 			}
 		}
@@ -101,6 +102,8 @@ void VirtualMachine::run()
 			throw VirtualMachineZeroDivisionError(instruction->getLineNum());
 		}
 	}
+
+	throw VirtualMachineNoExitError();
 }
 
 VirtualMachine::VirtualMachine() {}

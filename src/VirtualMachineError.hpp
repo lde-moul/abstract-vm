@@ -9,6 +9,7 @@ class VirtualMachineError : public std::runtime_error
 {
 public:
 	VirtualMachineError();
+	VirtualMachineError(std::string message);
 	VirtualMachineError(std::string message, uint32_t lineNum);
 };
 
@@ -58,6 +59,12 @@ class VirtualMachineRangeError : public VirtualMachineError
 {
 public:
 	VirtualMachineRangeError(uint32_t lineNum);
+};
+
+class VirtualMachineNoExitError : public VirtualMachineError
+{
+public:
+	VirtualMachineNoExitError();
 };
 
 #endif
