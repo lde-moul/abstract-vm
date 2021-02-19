@@ -6,6 +6,8 @@ VirtualMachineError::VirtualMachineError(std::string message) : std::runtime_err
 
 VirtualMachineOperationOverflowError::VirtualMachineOperationOverflowError() : VirtualMachineError("operation overflow") {}
 
+VirtualMachineOperationUnderflowError::VirtualMachineOperationUnderflowError() : VirtualMachineError("operation underflow") {}
+
 VirtualMachineZeroDivisionError::VirtualMachineZeroDivisionError() : VirtualMachineError("division by zero") {}
 
 VirtualMachineEmptyStackError::VirtualMachineEmptyStackError() : VirtualMachineError("empty stack") {}

@@ -87,6 +87,10 @@ void VirtualMachine::run()
 	{
 		throw VirtualMachineOperationOverflowError();
 	}
+	catch (OperationUnderflowError & e)
+	{
+		throw VirtualMachineOperationUnderflowError();
+	}
 	catch (ZeroDivisionError & e)
 	{
 		throw VirtualMachineZeroDivisionError();

@@ -25,7 +25,7 @@ IOperand const * Int32::operator+(IOperand const & rhs) const
 		if (a >= 0 && b >= 0 && a > INT32_MAX - b)
 			throw OperationOverflowError();
 		else if (a < 0 && b < 0 && a < INT32_MIN - b)
-			throw OperationOverflowError();
+			throw OperationUnderflowError();
 
 		auto resultString = std::to_string(a + b);
 		return factory.createOperand(getType(), resultString);
@@ -49,7 +49,7 @@ IOperand const * Int32::operator-(IOperand const & rhs) const
 		if (a >= 0 && b < 0 && a > INT32_MAX + b)
 			throw OperationOverflowError();
 		else if (a < 0 && b >= 0 && a < INT32_MIN + b)
-			throw OperationOverflowError();
+			throw OperationUnderflowError();
 
 		resultString = std::to_string(a - b);
 	}
@@ -60,7 +60,12 @@ IOperand const * Int32::operator-(IOperand const & rhs) const
 		float result = a - b;
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}
@@ -71,7 +76,12 @@ IOperand const * Int32::operator-(IOperand const & rhs) const
 		double result = a - b;
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}
@@ -131,7 +141,12 @@ IOperand const * Int32::operator/(IOperand const & rhs) const
 		float result = a / b;
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}
@@ -142,7 +157,12 @@ IOperand const * Int32::operator/(IOperand const & rhs) const
 		double result = a / b;
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}
@@ -173,7 +193,12 @@ IOperand const * Int32::operator%(IOperand const & rhs) const
 		float result = std::fmod(a, b);
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}
@@ -184,7 +209,12 @@ IOperand const * Int32::operator%(IOperand const & rhs) const
 		double result = std::fmod(a, b);
 
 		if (!std::isfinite(result))
-			throw OperationOverflowError();
+		{
+			if (result > 0)
+				throw OperationOverflowError();
+			else
+				throw OperationUnderflowError();
+		}
 
 		resultString = std::to_string(result);
 	}

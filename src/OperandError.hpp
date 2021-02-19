@@ -15,6 +15,12 @@ public:
 	OperationOverflowError();
 };
 
+class OperationUnderflowError : public OperandError
+{
+public:
+	OperationUnderflowError();
+};
+
 class ZeroDivisionError : public OperandError
 {
 public:
