@@ -1,4 +1,5 @@
 #include "OperandFactory.hpp"
+#include "OperandError.hpp"
 #include "VirtualMachine.hpp"
 #include "VirtualMachineError.hpp"
 
@@ -16,68 +17,79 @@ void VirtualMachine::run()
 	OperandFactory factory;
 	IOperand const * op1, * op2, * result;
 
-	for (Instruction const * instruction : instructions)
+	try
 	{
-		switch (instruction->getType())
+		for (Instruction const * instruction : instructions)
 		{
-		case eInstructionType::push:
-		{
-			IOperand const * operand = instruction->getOperand();
-			IOperand const * newOperand = factory.createOperand(operand->getType(), operand->toString());
-			stack.push(newOperand);
-			break;
+			switch (instruction->getType())
+			{
+			case eInstructionType::push:
+			{
+				IOperand const * operand = instruction->getOperand();
+				IOperand const * newOperand = factory.createOperand(operand->getType(), operand->toString());
+				stack.push(newOperand);
+				break;
+			}
+			case eInstructionType::pop:
+				stack.pop();
+				break;
+			case eInstructionType::dump:
+				stack.dump();
+				break;
+			case eInstructionType::assert:
+				op1 = stack.peek();
+				op2 = instruction->getOperand();
+				if (op1->getType() != op2->getType() || op1->toString() != op2->toString())
+					throw VirtualMachineAssertionError();
+				break;
+			case eInstructionType::add:
+				popOperandPair(op1, op2);
+				result = *op2 + *op1;
+				stack.push(result);
+				break;
+			case eInstructionType::sub:
+				popOperandPair(op1, op2);
+				result = *op2 - *op1;
+				stack.push(result);
+				break;
+			case eInstructionType::mul:
+				popOperandPair(op1, op2);
+				result = *op2 * *op1;
+				stack.push(result);
+				break;
+			case eInstructionType::div:
+				popOperandPair(op1, op2);
+				result = *op2 / *op1;
+				stack.push(result);
+				break;
+			case eInstructionType::mod:
+				popOperandPair(op1, op2);
+				result = *op2 % *op1;
+				stack.push(result);
+				break;
+			case eInstructionType::print:
+			{
+				IOperand const * operand = stack.peek();
+				if (operand->getType() != eOperandType::Int8)
+					throw VirtualMachineTypeError();
+				signed char c = std::stoi(operand->toString());
+				if (c < 0)
+					throw VirtualMachineRangeError();
+				std::cout << c << std::endl;
+				break;
+			}
+			case eInstructionType::exit:
+				break;
+			}
 		}
-		case eInstructionType::pop:
-			stack.pop();
-			break;
-		case eInstructionType::dump:
-			stack.dump();
-			break;
-		case eInstructionType::assert:
-			op1 = stack.peek();
-			op2 = instruction->getOperand();
-			if (op1->getType() != op2->getType() || op1->toString() != op2->toString())
-				throw VirtualMachineError();
-			break;
-		case eInstructionType::add:
-			popOperandPair(op1, op2);
-			result = *op2 + *op1;
-			stack.push(result);
-			break;
-		case eInstructionType::sub:
-			popOperandPair(op1, op2);
-			result = *op2 - *op1;
-			stack.push(result);
-			break;
-		case eInstructionType::mul:
-			popOperandPair(op1, op2);
-			result = *op2 * *op1;
-			stack.push(result);
-			break;
-		case eInstructionType::div:
-			popOperandPair(op1, op2);
-			result = *op2 / *op1;
-			stack.push(result);
-			break;
-		case eInstructionType::mod:
-			popOperandPair(op1, op2);
-			result = *op2 % *op1;
-			stack.push(result);
-			break;
-		case eInstructionType::print:
-		{
-			IOperand const * operand = stack.peek();
-			if (operand->getType() != eOperandType::Int8)
-				throw VirtualMachineError();
-			signed char c = std::stoi(operand->toString());
-			if (c < 0)
-				throw VirtualMachineError();
-			std::cout << c << std::endl;
-			break;
-		}
-		case eInstructionType::exit:
-			break;
-		}
+	}
+	catch (OperationOverflowError & e)
+	{
+		throw VirtualMachineOperationOverflowError();
+	}
+	catch (ZeroDivisionError & e)
+	{
+		throw VirtualMachineZeroDivisionError();
 	}
 }
 
