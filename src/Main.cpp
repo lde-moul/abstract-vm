@@ -54,19 +54,19 @@ int main(int argc, char **argv)
 	}
 	catch (LexerError &e)
 	{
-		std::cerr << e.what();
+		std::cerr << e.what() << std::endl;
 
 		return 1;
 	}
 	catch (ParserError &e)
 	{
-		std::cerr << e.what();
+		std::cerr << e.what() << std::endl;
 
 		return 1;
 	}
 	catch (VirtualMachineError &e)
 	{
-		std::cerr << e.what();
+		std::cerr << e.what() << std::endl;
 
 		return 1;
 	}
