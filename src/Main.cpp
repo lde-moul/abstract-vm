@@ -6,17 +6,32 @@
 #include "VirtualMachineError.hpp"
 
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 int main(int argc, char **argv)
 {
-	(void)argc;
+	std::ostringstream codeStream;
 
-	std::ifstream file(argv[1]);
-	std::ostringstream stringStream;
-	stringStream << file.rdbuf();
-	std::string code = stringStream.str();
+	if (argc == 1)
+	{
+		std::string line;
+
+		while (std::getline(std::cin, line))
+		{
+			if (line != ";;")
+				codeStream << line << std::endl;
+			else
+				break;
+		}
+	}
+	else
+	{
+		std::ifstream file(argv[1]);
+		codeStream << file.rdbuf();
+	}
+
+	std::string code = codeStream.str();
 
 	try
 	{
