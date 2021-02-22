@@ -25,10 +25,16 @@ int main(int argc, char **argv)
 				break;
 		}
 	}
-	else
+	else if (argc == 2)
 	{
 		std::ifstream file(argv[1]);
 		codeStream << file.rdbuf();
+	}
+	else
+	{
+		std::cerr << "too many arguments" << std::endl;
+
+		return 1;
 	}
 
 	std::string code = codeStream.str();
