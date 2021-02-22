@@ -32,6 +32,8 @@ std::vector<LexerToken> const & Lexer::run()
 			lineNum++;
 		else if (tryEatNextToken("^(\\s+)", eLexerTokenType::none))
 			continue;
+		else if (tryEatNextToken("^(;;)", eLexerTokenType::none))
+			throw LexerError(lineNum);
 		else if (tryEatNextToken("^(;.*)", eLexerTokenType::none))
 			continue;
 		else if (tryEatNextToken("^(push|pop|dump|assert|add|sub|mul|div|mod|print|exit)[^\\w]", eLexerTokenType::instruction))
