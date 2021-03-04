@@ -37,36 +37,15 @@ SRC = Instruction.cpp\
       VirtualMachineError.cpp\
       VirtualMachineStack.cpp\
 
-DEP = Instruction.hpp\
-      InstructionType.hpp\
-      Int8.hpp\
-      Int16.hpp\
-      Int32.hpp\
-      Float.hpp\
-      Double.hpp\
-      IOperand.hpp\
-      Lexer.hpp\
-      LexerError.hpp\
-      LexerToken.hpp\
-      LexerTokenType.hpp\
-      OperandFactory.hpp\
-      OperandType.hpp\
-      OperandError.hpp\
-      Parser.hpp\
-      ParserError.hpp\
-      VirtualMachine.hpp\
-      VirtualMachineError.hpp\
-      VirtualMachineStack.hpp\
-
 OBJ := $(SRC:%.cpp=$(OBJDIR)/%.o)
 SRC := $(SRC:%=$(SRCDIR)/%)
-DEP := $(DEP:%=$(SRCDIR)/%)
+DEP := $(OBJ:%.o=%.d)
 
 
 all: $(NAME)
 
 clean:
-	@/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ) $(DEP)
 
 fclean: clean
 	@/bin/rm -f $(NAME)
@@ -76,8 +55,10 @@ re: fclean all
 $(NAME): $(OBJDIR) $(OBJ)
 	@$(CXX) $(CXXFLAGS) -o $@ $(OBJ)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEP)
-	@$(CXX) -std=c++11 $(CXXFLAGS) -o $@ -c $<
+-include $(DEP)
+
+$(OBJDIR)/%.o:
+	@$(CXX) -std=c++11 -MMD -c -o $@ $(CXXFLAGS) $<
 
 $(OBJDIR):
 	@/bin/mkdir $(OBJDIR)
