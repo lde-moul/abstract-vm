@@ -57,7 +57,7 @@ $(NAME): $(OBJDIR) $(OBJ)
 
 -include $(DEP)
 
-$(OBJDIR)/%.o:
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@$(CXX) -std=c++11 -MMD -c -o $@ $(CXXFLAGS) $<
 
 $(OBJDIR):
