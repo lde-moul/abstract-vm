@@ -81,7 +81,7 @@ void Parser::parseOperandInstruction(eInstructionType instructionType)
 	}
 	catch (OperandRangeError & e)
 	{
-		throw ParserError(valueToken->getLineNum());
+		throw ParserRangeError(valueToken->getLineNum());
 	}
 }
 
