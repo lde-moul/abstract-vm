@@ -28,7 +28,20 @@ int main(int argc, char **argv)
 	else if (argc == 2)
 	{
 		std::ifstream file(argv[1]);
+		if (file.fail())
+		{
+			std::cerr << "failed to open file" << std::endl;
+
+			return 1;
+		}
+
 		codeStream << file.rdbuf();
+		if (codeStream.fail())
+		{
+			std::cerr << "failed to read file" << std::endl;
+
+			return 1;
+		}
 	}
 	else
 	{
