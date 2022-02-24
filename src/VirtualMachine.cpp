@@ -37,7 +37,7 @@ void VirtualMachine::run()
 				if (stack.getSize() < 1)
 					throw VirtualMachineEmptyStackError(instruction->getLineNum());
 
-				stack.pop();
+				delete stack.pop();
 				break;
 			case eInstructionType::swap:
 				popOperandPair(op1, op2, instruction);
@@ -69,26 +69,36 @@ void VirtualMachine::run()
 				popOperandPair(op1, op2, instruction);
 				result = *op2 + *op1;
 				stack.push(result);
+				delete op1;
+				delete op2;
 				break;
 			case eInstructionType::sub:
 				popOperandPair(op1, op2, instruction);
 				result = *op2 - *op1;
 				stack.push(result);
+				delete op1;
+				delete op2;
 				break;
 			case eInstructionType::mul:
 				popOperandPair(op1, op2, instruction);
 				result = *op2 * *op1;
 				stack.push(result);
+				delete op1;
+				delete op2;
 				break;
 			case eInstructionType::div:
 				popOperandPair(op1, op2, instruction);
 				result = *op2 / *op1;
 				stack.push(result);
+				delete op1;
+				delete op2;
 				break;
 			case eInstructionType::mod:
 				popOperandPair(op1, op2, instruction);
 				result = *op2 % *op1;
 				stack.push(result);
+				delete op1;
+				delete op2;
 				break;
 			case eInstructionType::inv:
 				if (stack.getSize() < 1)
@@ -96,6 +106,7 @@ void VirtualMachine::run()
 				op1 = stack.pop();
 				result = !(*op1);
 				stack.push(result);
+				delete op1;
 				break;
 			case eInstructionType::print:
 			{
