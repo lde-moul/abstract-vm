@@ -229,6 +229,32 @@ IOperand const * Int32::operator!() const
 	return factory.createOperand(getType(), resultString);
 }
 
+bool Int32::operator<(IOperand const & rhs) const
+{
+	if (getPrecision() >= rhs.getPrecision())
+	{
+		int32_t a = value;
+		int32_t b = std::stoi(rhs.toString());
+		return a < b;
+	}
+	else if (rhs.getType() == eOperandType::Float)
+	{
+		float a = value;
+		float b = std::stof(rhs.toString());
+		return a < b;
+	}
+	else if (rhs.getType() == eOperandType::Double)
+	{
+		double a = value;
+		double b = std::stod(rhs.toString());
+		return a < b;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 std::string const & Int32::toString() const
 {
 	return str;

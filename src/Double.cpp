@@ -118,6 +118,11 @@ IOperand const * Double::operator!() const
 	return factory.createOperand(getType(), resultString);
 }
 
+bool Double::operator<(IOperand const & rhs) const
+{
+	return value < std::stod(rhs.toString());
+}
+
 std::string const & Double::toString() const
 {
 	return str;

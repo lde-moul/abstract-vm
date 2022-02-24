@@ -17,6 +17,7 @@ public:
 	virtual IOperand const * operator/(IOperand const & rhs) const = 0; // Quotient
 	virtual IOperand const * operator%(IOperand const & rhs) const = 0; // Modulo
 	virtual IOperand const * operator!() const = 0; // Not
+	virtual bool operator<(IOperand const & rhs) const = 0; // Less than
 
 	virtual std::string const & toString() const = 0; // String representation of the instance
 

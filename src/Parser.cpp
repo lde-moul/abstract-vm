@@ -44,6 +44,10 @@ eInstructionType Parser::nameToInstructionType(std::string const & name) const
 		return eInstructionType::mod;
 	else if (name == "not")
 		return eInstructionType::inv;
+	else if (name == "min")
+		return eInstructionType::min;
+	else if (name == "max")
+		return eInstructionType::max;
 	else if (name == "print")
 		return eInstructionType::print;
 	else

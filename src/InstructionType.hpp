@@ -15,6 +15,8 @@ enum class eInstructionType
 	div,
 	mod,
 	inv,
+	min,
+	max,
 	print,
 	exit,
 };

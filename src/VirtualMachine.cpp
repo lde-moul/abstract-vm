@@ -108,6 +108,32 @@ void VirtualMachine::run()
 				stack.push(result);
 				delete op1;
 				break;
+			case eInstructionType::min:
+				popOperandPair(op1, op2, instruction);
+				if (*op1 < *op2)
+				{
+					stack.push(op1);
+					delete op2;
+				}
+				else
+				{
+					stack.push(op2);
+					delete op1;
+				}
+				break;
+			case eInstructionType::max:
+				popOperandPair(op1, op2, instruction);
+				if (*op2 < *op1)
+				{
+					stack.push(op1);
+					delete op2;
+				}
+				else
+				{
+					stack.push(op2);
+					delete op1;
+				}
+				break;
 			case eInstructionType::print:
 			{
 				if (stack.getSize() < 1)

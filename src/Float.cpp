@@ -196,6 +196,26 @@ IOperand const * Float::operator!() const
 	return factory.createOperand(getType(), resultString);
 }
 
+bool Float::operator<(IOperand const & rhs) const
+{
+	if (getPrecision() >= rhs.getPrecision())
+	{
+		float a = value;
+		float b = std::stof(rhs.toString());
+		return a < b;
+	}
+	else if (rhs.getType() == eOperandType::Double)
+	{
+		double a = value;
+		double b = std::stod(rhs.toString());
+		return a < b;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 std::string const & Float::toString() const
 {
 	return str;
