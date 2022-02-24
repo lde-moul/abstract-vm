@@ -44,6 +44,16 @@ void VirtualMachine::run()
 				stack.push(op1);
 				stack.push(op2);
 				break;
+			case eInstructionType::copy:
+			{
+				if (stack.getSize() < 1)
+					throw VirtualMachineEmptyStackError(instruction->getLineNum());
+
+				IOperand const * operand = stack.peek();
+				IOperand const * newOperand = factory.createOperand(operand->getType(), operand->toString());
+				stack.push(newOperand);
+				break;
+			}
 			case eInstructionType::dump:
 				stack.dump();
 				break;
