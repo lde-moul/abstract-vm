@@ -39,6 +39,11 @@ void VirtualMachine::run()
 
 				stack.pop();
 				break;
+			case eInstructionType::swap:
+				popOperandPair(op1, op2, instruction);
+				stack.push(op1);
+				stack.push(op2);
+				break;
 			case eInstructionType::dump:
 				stack.dump();
 				break;

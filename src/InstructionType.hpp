@@ -5,6 +5,7 @@ enum class eInstructionType
 {
 	push,
 	pop,
+	swap,
 	dump,
 	assert,
 	add,

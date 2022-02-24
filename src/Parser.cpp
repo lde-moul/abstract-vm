@@ -24,6 +24,8 @@ eInstructionType Parser::nameToInstructionType(std::string const & name) const
 		return eInstructionType::push;
 	else if (name == "pop")
 		return eInstructionType::pop;
+	else if (name == "swap")
+		return eInstructionType::swap;
 	else if (name == "dump")
 		return eInstructionType::dump;
 	else if (name == "assert")
