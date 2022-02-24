@@ -17,11 +17,13 @@ void VirtualMachine::popOperandPair(IOperand const * & op1, IOperand const * & o
 
 void VirtualMachine::run()
 {
-	OperandFactory factory;
-	IOperand const * op1, * op2, * result;
-
 	for (Instruction const * instruction : instructions)
 	{
+		OperandFactory factory;
+		IOperand const * op1 = nullptr;
+		IOperand const * op2 = nullptr;
+		IOperand const * result = nullptr;
+
 		try
 		{
 			switch (instruction->getType())
@@ -154,14 +156,23 @@ void VirtualMachine::run()
 		}
 		catch (OperationOverflowError & e)
 		{
+			delete op1;
+			delete op2;
+
 			throw VirtualMachineOperationOverflowError(instruction->getLineNum());
 		}
 		catch (OperationUnderflowError & e)
 		{
+			delete op1;
+			delete op2;
+
 			throw VirtualMachineOperationUnderflowError(instruction->getLineNum());
 		}
 		catch (ZeroDivisionError & e)
 		{
+			delete op1;
+			delete op2;
+
 			throw VirtualMachineZeroDivisionError(instruction->getLineNum());
 		}
 	}
