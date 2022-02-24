@@ -48,6 +48,8 @@ void VirtualMachine::run()
 				stack.dump();
 				break;
 			case eInstructionType::assert:
+				if (stack.getSize() < 1)
+					throw VirtualMachineAssertionError(instruction->getLineNum());
 				op1 = stack.peek();
 				op2 = instruction->getOperand();
 				if (op1->getType() != op2->getType() || op1->toString() != op2->toString())
@@ -87,6 +89,8 @@ void VirtualMachine::run()
 				break;
 			case eInstructionType::print:
 			{
+				if (stack.getSize() < 1)
+					throw VirtualMachineEmptyStackError(instruction->getLineNum());
 				IOperand const * operand = stack.peek();
 				if (operand->getType() != eOperandType::Int8)
 					throw VirtualMachineTypeError(instruction->getLineNum());
