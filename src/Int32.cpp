@@ -222,6 +222,13 @@ IOperand const * Int32::operator%(IOperand const & rhs) const
 	return factory.createOperand(getType(), resultString);
 }
 
+IOperand const * Int32::operator!() const
+{
+	OperandFactory factory;
+	std::string resultString = std::to_string(!value);
+	return factory.createOperand(getType(), resultString);
+}
+
 std::string const & Int32::toString() const
 {
 	return str;

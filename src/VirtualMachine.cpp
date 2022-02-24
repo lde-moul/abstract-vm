@@ -73,6 +73,13 @@ void VirtualMachine::run()
 				result = *op2 % *op1;
 				stack.push(result);
 				break;
+			case eInstructionType::inv:
+				if (stack.getSize() < 1)
+					throw VirtualMachineNotEnoughOperandsError(instruction->getLineNum());
+				op1 = stack.pop();
+				result = !(*op1);
+				stack.push(result);
+				break;
 			case eInstructionType::print:
 			{
 				IOperand const * operand = stack.peek();

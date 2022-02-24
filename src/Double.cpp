@@ -111,6 +111,13 @@ IOperand const * Double::operator%(IOperand const & rhs) const
 	return factory.createOperand(getType(), resultString);
 }
 
+IOperand const * Double::operator!() const
+{
+	OperandFactory factory;
+	auto resultString = std::to_string(!value);
+	return factory.createOperand(getType(), resultString);
+}
+
 std::string const & Double::toString() const
 {
 	return str;

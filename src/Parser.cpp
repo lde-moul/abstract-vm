@@ -38,6 +38,8 @@ eInstructionType Parser::nameToInstructionType(std::string const & name) const
 		return eInstructionType::div;
 	else if (name == "mod")
 		return eInstructionType::mod;
+	else if (name == "not")
+		return eInstructionType::inv;
 	else if (name == "print")
 		return eInstructionType::print;
 	else

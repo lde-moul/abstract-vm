@@ -18,6 +18,7 @@ public:
 	virtual IOperand const * operator*(IOperand const & rhs) const;
 	virtual IOperand const * operator/(IOperand const & rhs) const;
 	virtual IOperand const * operator%(IOperand const & rhs) const;
+	virtual IOperand const * operator!() const;
 
 	virtual std::string const & toString() const;
 

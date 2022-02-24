@@ -12,6 +12,7 @@ enum class eInstructionType
 	mul,
 	div,
 	mod,
+	inv,
 	print,
 	exit,
 };
