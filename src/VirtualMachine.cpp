@@ -197,8 +197,4 @@ VirtualMachine & VirtualMachine::operator=(VirtualMachine const & rhs)
 	return *this;
 }
 
-VirtualMachine::~VirtualMachine()
-{
-	for (Instruction const * instruction : instructions)
-		delete instruction;
-}
+VirtualMachine::~VirtualMachine() {}

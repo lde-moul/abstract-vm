@@ -135,4 +135,8 @@ Parser & Parser::operator=(Parser const & rhs)
 	return *this;
 }
 
-Parser::~Parser() {}
+Parser::~Parser()
+{
+	for (Instruction const * instruction : instructions)
+		delete instruction;
+}
